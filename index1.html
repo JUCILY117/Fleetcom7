@@ -23,24 +23,23 @@
       color: #fff;
       font-family: 'Poppins', sans-serif;
       text-align: center;
-      overflow: hidden; /* Prevent scroll when hidden */
-      position: relative; /* Allow absolute positioning of the video */
+      overflow: hidden;
+      position: relative;
     }
 
-    /* Background Video */
     video.background-video {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover; /* Ensures video covers the entire screen */
-      z-index: -1; /* Puts the video behind the content */
+      object-fit: cover;
+      z-index: -1;
     }
 
     .logo-container {
       position: relative;
-      z-index: 1; /* Make sure logo is above video */
+      z-index: 1;
     }
     .logo {
       width: 20vw;
@@ -54,7 +53,7 @@
     }
     .title span {
       font-size: 10rem;
-      color: #dc2626; /* Red-600 color for '7' */
+      color: #dc2626;
     }
     .message {
       font-weight: 600;
@@ -89,13 +88,12 @@
       left: 20px;
     }
     .audio-button {
-      left: 70px; /* Adjusted position for audio toggle button */
+      left: 70px;
     }
     .hidden {
       display: none;
     }
 
-    /* Responsive styles */
     @media (max-width: 768px) {
       body {
         margin: 1rem;
@@ -127,7 +125,7 @@
         width: 40px;
       }
       .hide-button, .audio-button {
-        left: 50%; /* Centering buttons in mobile view */
+        left: 50%;
         transform: translateX(-50%);
       }
       .hide-button {
@@ -139,29 +137,24 @@
     }
   </style>
 
-  <!-- Google Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 <body>
-  <!-- Background Video -->
   <video class="background-video" autoplay loop muted>
     <source src="/mcc.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
-  <!-- Audio element for autoplay and loop, initially muted -->
   <audio id="background-audio" loop muted>
     <source src="/halomcc.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
-  
-  <!-- Hide/Show UI Toggle Button (using Material Icons) -->
+
   <button class="hide-button" onclick="toggleVisibility()">
     <span id="toggle-icon" class="material-icons">visibility</span>
   </button>
 
-  <!-- Audio Toggle Button (Mute/Unmute) -->
   <button class="audio-button" onclick="toggleAudio()">
     <span id="audio-icon" class="material-icons">volume_off</span>
   </button>
@@ -177,14 +170,12 @@
   </div>
 
   <script>
-    // Function to toggle the visibility of the UI elements and change icon
     function toggleVisibility() {
       const elements = document.querySelectorAll('.logo-container, .title, .message');
       elements.forEach(element => {
         element.classList.toggle('hidden');
       });
 
-      // Toggle the icon from eye to eye-slash
       const icon = document.getElementById('toggle-icon');
       if (icon.innerText === 'visibility') {
         icon.innerText = 'visibility_off';
@@ -193,12 +184,10 @@
       }
     }
 
-    // Function to toggle audio mute/unmute
     function toggleAudio() {
       const audio = document.getElementById('background-audio');
       const icon = document.getElementById('audio-icon');
 
-      // Allow audio to play (unmute) when the user clicks to unmute for the first time
       if (audio.paused) {
         audio.play().catch((err) => {
           console.log('Audio playback failed:', err);
@@ -206,18 +195,16 @@
       }
 
       if (audio.muted) {
-        audio.muted = false; // Unmute audio
-        icon.innerText = 'volume_up'; // Change icon to volume-up
+        audio.muted = false;
+        icon.innerText = 'volume_up';
       } else {
-        audio.muted = true; // Mute audio
-        icon.innerText = 'volume_off'; // Change icon to volume-off
+        audio.muted = true;
+        icon.innerText = 'volume_off';
       }
     }
 
-    // Wait for user interaction to play the audio
     window.addEventListener('load', () => {
       const audio = document.getElementById('background-audio');
-      // Do not automatically play audio, wait for the user to click the button
     });
   </script>
 </body>

@@ -24,12 +24,9 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
-
-// Initialize Firebase Messaging
 export const messaging = getMessaging(app);
 
 
-// Function to sign up with a unique username
 export const signUp = async (username, password) => {
   const usersCollection = collection(db, "users");
   const usernameQuery = query(usersCollection, where("username", "==", username));
@@ -51,7 +48,6 @@ export const signUp = async (username, password) => {
   return user;
 };
 
-// Function to log in with username and password
 export const login = async (username, password) => {
   const usersCollection = collection(db, "users");
   const usernameQuery = query(usersCollection, where("username", "==", username));
@@ -68,24 +64,18 @@ export const login = async (username, password) => {
   return userCredential.user;
 };
 
-//google sign in
 export const googleSignIn = async () => {
   const auth = getAuth();
   const googleProvider = new GoogleAuthProvider();
 
   try {
-    // Log before attempting to sign in
     console.log('Attempting Google Sign-In...');
-    
-    // Sign in with Google
     const result = await signInWithPopup(auth, googleProvider);
     console.log('Google Sign-In successful:', result);
 
-    // Get the signed-in user
     const user = result.user;
     console.log('Signed in user:', user);
 
-    // Check if user document exists in Firestore
     const ensureUserDocumentExists = async (user) => {
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
@@ -98,28 +88,22 @@ export const googleSignIn = async () => {
       }
     };
     await ensureUserDocumentExists(user);
-    
-    // Return the signed-in user
     return user;
 
   } catch (error) {
     if (error.code === 'auth/popup-closed-by-user') {
-      // This error occurs if the user closes the popup before completing authentication
       console.warn('Google Sign-In popup was closed by the user before completing the process.');
     } else {
-      // Log any other errors that occur
       console.error('Error during Google Sign-In:', error);
     }
     throw error;
   }
 };
 
-// Function to log out
 export const logout = async () => {
   await signOut(auth);
 };
 
-// Real-time listener for auth state changes
 export const onUserProfileChange = (callback) => {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -131,7 +115,6 @@ export const onUserProfileChange = (callback) => {
   });  
 };
 
-// Sync the user's profile (name and profile picture) to Firestore
 export const syncUserProfile = async (user) => {
   if (user) {
     const userDocRef = doc(db, "users", user.uid);
@@ -142,7 +125,6 @@ export const syncUserProfile = async (user) => {
   }
 };
 
-// Function to update username in all previous messages
 export const updateUsernameInMessages = async (oldUsername, newUsername) => {
   const messagesCollection = collection(db, "messages");
   const messagesQuery = query(messagesCollection, where("username", "==", oldUsername));

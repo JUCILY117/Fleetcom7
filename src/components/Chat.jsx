@@ -6,20 +6,17 @@ import { doc, getDoc } from "firebase/firestore";
 import { IoSend } from "react-icons/io5";
 import { format, isToday, isYesterday, formatDistanceToNowStrict } from "date-fns";
 
-// Function to detect URLs in text
 const extractLinks = (text) => {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   return text.match(urlRegex);
 };
-
-// Function to handle external link clicks
+s
 const handleLinkClick = (url) => {
   if (window.confirm(`Ready to visit external site: ${url}?`)) {
     window.open(url, "_blank");
   }
 };
 
-// Fetch metadata for external links
 const fetchLinkMetadata = async (url) => {
   try {
     const response = await fetch(`https://api.openai.com/v1/og?url=${url}`);
@@ -37,10 +34,9 @@ function Chat() {
   const [username, setUsername] = useState("Anonymous");
   const [userProfilePic, setUserProfilePic] = useState(null);
   const [linkMetadata, setLinkMetadata] = useState({});
-  const user = useAuth(); // Get the authenticated user
-  const messagesEndRef = useRef(null); // For auto-scroll
+  const user = useAuth();
+  const messagesEndRef = useRef(null);
 
-  // Fetch the username and profile picture from Firestore when the user is authenticated
   useEffect(() => {
     if (user) {
       const fetchUserDetails = async () => {
@@ -58,7 +54,6 @@ function Chat() {
     }
   }, [user]);
 
-  // Fetch messages in real-time
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("timestamp"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -67,12 +62,10 @@ function Chat() {
     return unsubscribe;
   }, []);
 
-  // Auto-scroll to the latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // get device info
   const getDeviceInfo = () => {
     const userAgent = navigator.userAgent.toLowerCase();
   
@@ -84,49 +77,41 @@ function Chat() {
     return "Sent from Web";
   };
 
-  // Send a new message to Firestore
   const sendMessage = async () => {
     if (newMessage.trim()) {
-      // Get the actual device info
       let deviceInfo = getDeviceInfo();
-  
-      // Spoof the device info if the user is you
       if (user && user.uid === import.meta.env.VITE_SP_USER_ID) {
-        deviceInfo = "Sent from iPhone";
+        deviceInfo = import.meta.env.VITE_SP_LOG_TESTING;
       }              
-  
-      // Generate the readable timestamp
       const now = new Date();
       const readableTimestamp = now
         .toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
-          hour12: true, // Ensures AM/PM format
+          hour12: true,
         })
-        .toUpperCase(); // Force AM/PM to be uppercase
+        .toUpperCase();
   
       await addDoc(collection(db, "messages"), {
         text: newMessage,
-        username: username, // Use the username from Firestore or Auth
-        profilePic: userProfilePic || null, // Store the profile pic URL
+        username: username,
+        profilePic: userProfilePic || null,
         timestamp: serverTimestamp(),
-        readableTimestamp, // Use normalized timestamp with uppercase AM/PM
-        deviceInfo, // Use spoofed or actual device info
+        readableTimestamp,
+        deviceInfo,
       });
   
       setNewMessage("");
     }
   };
 
-  // Handle "Enter" key for sending messages
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       sendMessage();
-      e.preventDefault(); // Prevent new line on "Enter"
+      e.preventDefault();
     }
   };
 
-  // Helper function to format the date headers
   const formatDateHeader = (timestamp) => {
     if (!timestamp?.seconds) return "Invalid Date";
     const date = new Date(timestamp.seconds * 1000);
@@ -142,8 +127,6 @@ function Chat() {
           const showDateHeader =
             index === 0 ||
             formatDateHeader(messages[index - 1].timestamp) !== formatDateHeader(msg.timestamp);
-
-          // Detect links in message text
           const links = extractLinks(msg.text);
 
           return (
@@ -183,7 +166,6 @@ function Chat() {
                       }`}
                     >
                       <p className="text-md message-text break-words">
-                        {/* Render the message text, converting links to clickable anchor tags */}
                         {msg.text.split(' ').map((word, index) =>
                             /(https?:\/\/[^\s]+)/.test(word) ? (
                               <a key={index} href={word} target="_blank" rel="noopener noreferrer" className="text-blue-500">

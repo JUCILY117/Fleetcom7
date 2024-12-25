@@ -5,20 +5,20 @@ import AuthModal from "./components/AuthModal";
 import { logout, db } from "./firebase"; 
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { getToken } from 'firebase/messaging';
-import { messaging } from './firebase'; // Adjust path if necessary
+import { messaging } from './firebase';
 import './App.css';
-import logo from '/logo.png'; // Replace with the actual path to the logo image
+import logo from '/logo.png';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [authType, setAuthType] = useState("signup");
-  const [menuOpen, setMenuOpen] = useState(false); // State to track menu open/close
-  const [username, setUsername] = useState("Anonymous"); // State to store username
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [username, setUsername] = useState("Anonymous");
   const menuRef = useRef(null);
   const user = useAuth();
 
   useEffect(() => {
-    if (user?.uid) { // Ensure user and UID are present
+    if (user?.uid) {
       const fetchUsername = async () => {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
@@ -30,8 +30,6 @@ function App() {
       fetchUsername();
     }
        
-
-      // Listen for real-time updates to the username field
       if (user?.uid) {
         const unsubscribe = onSnapshot(doc(db, "users", user.uid), (docSnapshot) => {
           if (docSnapshot.exists()) {
@@ -40,7 +38,7 @@ function App() {
           }
         });
       
-        return () => unsubscribe(); // Cleanup listener if user changes
+        return () => unsubscribe();
       }
       
   }, [user]);
