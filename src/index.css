@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Smooth fade-in and fade-out animations */
+.transition {
+  transition: opacity 0.4s ease-in-out;
+}

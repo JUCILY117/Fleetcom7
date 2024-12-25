@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/logo.png" />
+  <title>Maintenance - FLEETCOM 7</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      overflow: hidden; /* Prevent scroll when hidden */
+      position: relative; /* Allow absolute positioning of the video */
+    }
+
+    /* Background Video */
+    video.background-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures video covers the entire screen */
+      z-index: -1; /* Puts the video behind the content */
+    }
+
+    .logo-container {
+      position: relative;
+      z-index: 1; /* Make sure logo is above video */
+    }
+    .logo {
+      width: 20vw;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 8rem;
+      font-weight: bold;
+      color: #fff;
+    }
+    .title span {
+      font-size: 10rem;
+      color: #dc2626; /* Red-600 color for '7' */
+    }
+    .message {
+      font-weight: 600;
+      font-size: 5rem;
+      margin-top: 10px;
+    }
+    .firebase-container {
+      position: absolute;
+      top: 30px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    .firebase-logo {
+      width: 3vw;
+      height: auto;
+    }
+    .hide-button, .audio-button {
+      position: absolute;
+      bottom: 20px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .hide-button {
+      left: 20px;
+    }
+    .audio-button {
+      left: 70px; /* Adjusted position for audio toggle button */
+    }
+    .hidden {
+      display: none;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      body {
+        margin: 1rem;
+      }
+      .logo {
+        width: 50vw;
+      }
+      .title {
+        font-size: 2.5rem;
+      }
+      .title span {
+        font-size: 3.5rem;
+      }
+      .message {
+        font-size: 2rem;
+      }
+      .firebase-container {
+        position: fixed;
+        bottom: 20px;
+        top: unset;
+        right: unset;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: column;
+        gap: 5px;
+        font-size: 1rem;
+      }
+      .firebase-logo {
+        width: 40px;
+      }
+      .hide-button, .audio-button {
+        left: 50%; /* Centering buttons in mobile view */
+        transform: translateX(-50%);
+      }
+      .hide-button {
+        display: none;
+      }
+      .audio-button {
+        display: none;
+      }
+    }
+  </style>
+
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+  <!-- Background Video -->
+  <video class="background-video" autoplay loop muted>
+    <source src="/mcc.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Audio element for autoplay and loop, initially muted -->
+  <audio id="background-audio" loop muted>
+    <source src="/halomcc.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  
+  <!-- Hide/Show UI Toggle Button (using Material Icons) -->
+  <button class="hide-button" onclick="toggleVisibility()">
+    <span id="toggle-icon" class="material-icons">visibility</span>
+  </button>
+
+  <!-- Audio Toggle Button (Mute/Unmute) -->
+  <button class="audio-button" onclick="toggleAudio()">
+    <span id="audio-icon" class="material-icons">volume_off</span>
+  </button>
+
+  <div class="logo-container">
+    <h1 class="title">FLEETCOM <span>7</span></h1>
+    <img src="/logo.png" alt="FLEETCOM Logo" class="logo">
+  </div>
+  <p class="message">Site is Down Temporarily.</p>
+  <div class="firebase-container">
+    <img src="https://cdn.iconscout.com/icon/free/png-256/free-firebase-3521427-2944871.png" alt="Firebase Logo" class="firebase-logo">
+    <span>Hosted on Firebase</span>
+  </div>
+
+  <script>
+    // Function to toggle the visibility of the UI elements and change icon
+    function toggleVisibility() {
+      const elements = document.querySelectorAll('.logo-container, .title, .message');
+      elements.forEach(element => {
+        element.classList.toggle('hidden');
+      });
+
+      // Toggle the icon from eye to eye-slash
+      const icon = document.getElementById('toggle-icon');
+      if (icon.innerText === 'visibility') {
+        icon.innerText = 'visibility_off';
+      } else {
+        icon.innerText = 'visibility';
+      }
+    }
+
+    // Function to toggle audio mute/unmute
+    function toggleAudio() {
+      const audio = document.getElementById('background-audio');
+      const icon = document.getElementById('audio-icon');
+
+      // Allow audio to play (unmute) when the user clicks to unmute for the first time
+      if (audio.paused) {
+        audio.play().catch((err) => {
+          console.log('Audio playback failed:', err);
+        });
+      }
+
+      if (audio.muted) {
+        audio.muted = false; // Unmute audio
+        icon.innerText = 'volume_up'; // Change icon to volume-up
+      } else {
+        audio.muted = true; // Mute audio
+        icon.innerText = 'volume_off'; // Change icon to volume-off
+      }
+    }
+
+    // Wait for user interaction to play the audio
+    window.addEventListener('load', () => {
+      const audio = document.getElementById('background-audio');
+      // Do not automatically play audio, wait for the user to click the button
+    });
+  </script>
+</body>
+</html>

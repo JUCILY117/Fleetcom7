@@ -1,0 +1,22 @@
+{
+    "name": "FLEETCOM 7",
+    "short_name": "FLEETCOM 7",
+    "description": "Unrelated to the UNSC Fleet Command, the Covenant Fleet Communication channel, part of the Covenant Battle Network, is intended for broadcasts across an entire fleet, rather than between a pair or more of ships. It seems to be the equivalent of the UNSC's FLEETCOM 7.",
+    "start_url": ".",
+    "display": "standalone", 
+    "background_color": "#000000",
+    "theme_color": "#242424",
+    "icons": [
+      {
+        "src": "/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  
