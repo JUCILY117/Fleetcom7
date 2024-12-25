@@ -10,16 +10,15 @@ function AuthModal({ isOpen, closeModal, authType, setAuthType }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isFading, setIsFading] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false); // State to manage tooltip visibility
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleAuth = async () => {
-    setError(""); // Reset error on new attempt
+    setError("");
     if (authType === "signup") {
       try {
         await signUp(username, password);
         closeModal();
       } catch (err) {
-        // Display detailed error messages based on error codes
         if (err.code === "auth/invalid-email") {
           toast.error("Invalid email address. Please check your email format.");
         } else if (err.code === "auth/email-already-in-use") {
@@ -35,7 +34,6 @@ function AuthModal({ isOpen, closeModal, authType, setAuthType }) {
         await login(username, password);
         closeModal();
       } catch (err) {
-        // Display detailed error messages based on error codes
         if (err.code === "auth/user-not-found") {
           toast.error("No account found with this email address.");
         } else if (err.code === "auth/wrong-password") {
@@ -56,7 +54,7 @@ function AuthModal({ isOpen, closeModal, authType, setAuthType }) {
       await googleSignIn();
       closeModal();
     } catch (err) {
-      console.error("Google Sign-In Error:", err); // Log detailed error
+      console.error("Google Sign-In Error:", err);
       if (err.code === "auth/popup-closed-by-user") {
         toast.error("Login popup was closed before completing the sign-in.");
       } else if (err.code === "auth/network-request-failed") {
@@ -76,18 +74,18 @@ function AuthModal({ isOpen, closeModal, authType, setAuthType }) {
   }, [isOpen]);  
 
   const switchAuthType = (newType) => {
-    setIsFading(false); // Start fade-out
+    setIsFading(false);
     setTimeout(() => {
-      setAuthType(newType); // Switch modal type after fade-out
-      setIsFading(true); // Start fade-in
-    }, 300); // Delay to allow fade-out animation to complete
+      setAuthType(newType);
+      setIsFading(true);
+    }, 300);
   };
 
   const handleBackgroundClick = () => {
-    setIsFading(false); // Start fade-out
+    setIsFading(false);
     setTimeout(() => {
-      closeModal(); // Close modal after fade-out animation completes
-    }, 300); // Match this duration with the fade-out duration (500ms)
+      closeModal();
+    }, 300);
   };
   
 
@@ -106,14 +104,10 @@ function AuthModal({ isOpen, closeModal, authType, setAuthType }) {
         className={`bg-black border border-[#2c2c2c] p-6 rounded shadow-lg w-96 transition-all duration-500 ease-out transform ${
           isFading ? "opacity-100 scale-100" : "opacity-0 scale-90"
         }`} onClick={(e) => e.stopPropagation()}>
-
-        {/* Sign Up / Login Heading with Tooltip */}
         <div className="flex items-center mb-6 relative">
           <h2 className="text-3xl font-bold">
             {authType === "signup" ? "Sign Up" : "Login"}
           </h2>
-
-          {/* Tooltip trigger */}
           <span
             className="absolute right-0 text-red-600 bg-white rounded-full font-bold cursor-pointer hover:text-white hover:bg-red-600 transition-all duration-300 ease-in-out"
             onMouseEnter={() => setShowTooltip(true)}
@@ -121,7 +115,6 @@ function AuthModal({ isOpen, closeModal, authType, setAuthType }) {
           >
             <BiSolidInfoCircle size={25} className="animate-heartbeat" />
           </span>
-          {/* Tooltip positioned immediately to the right of "A" */}
           {showTooltip && (
             <div
               className={`absolute top-0 ${

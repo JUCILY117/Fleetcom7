@@ -3,41 +3,35 @@ body{
   font-family: 'Poppins', sans-serif;
 }
 
-
-/* Custom scrollbar styles */
 ::-webkit-scrollbar {
-  width: 8px; /* Width of the vertical scrollbar */
-  height: 8px; /* Height of the horizontal scrollbar */
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #27272A; /* Background color of the scrollbar track */
-  border-radius: 10px; /* Round the edges of the track */
+  background-color: #27272A;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #ffffff; /* Thumb color (white) */
-  border-radius: 10px; /* Round the edges of the thumb */
-  border: 2px solid #27272A; /* Border around the thumb to match the track color */
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 2px solid #27272A;
 }
 
-/* Hover state for the scrollbar thumb */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #e5e5e5; /* Lighten the thumb color when hovered */
+  background-color: #e5e5e5;
 }
 
-/* Active state (when the scrollbar thumb is being dragged) */
 ::-webkit-scrollbar-thumb:active {
-  background-color: #d1d1d1; /* Darken the thumb color when actively dragging */
-  border: 2px solid #1c1c1e; /* Optional: change the border color to match the active state */
+  background-color: #d1d1d1;
+  border: 2px solid #1c1c1e;
 }
 
-/* Optional: If you want the scrollbar to appear only when needed, add this */
 ::-webkit-scrollbar {
-  display: block; /* Show scrollbar only when necessary */
+  display: block;
 }
 
-/* To apply this to specific containers with overflow */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -64,17 +58,15 @@ body{
 }
 
 input:disabled {
-  cursor: not-allowed; /* Changes the cursor to indicate it's disabled */
-  color: #888; /* Optional: Adjusts text color for disabled look */
+  cursor: not-allowed;
+  color: #888;
 }
 
 button:disabled {
-  cursor: not-allowed; /* Changes the cursor to indicate it's disabled */
-  opacity: 0.5; /* Makes the button appear semi-transparent when disabled */
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
-
-/* Blinking outline animation */
 @keyframes blinkOutline {
   0% {
     outline: 2px solid red;
@@ -87,7 +79,6 @@ button:disabled {
   }
 }
 
-/* Heartbeat animation */
 @keyframes heartbeat {
   0% {
     transform: scale(1);
@@ -106,19 +97,17 @@ button:disabled {
   }
 }
 
-/* Apply blinking outline animation */
 .animate-info-blink {
   animation: blinkOutline 1.5s infinite ease-in-out;
 }
 
-/* Apply heartbeat animation */
 .animate-heartbeat {
   animation: heartbeat 1.5s infinite ease-in-out;
 }
 
 .message-text {
-  word-wrap: break-word; /* Wraps text with spaces */
-  white-space: pre-wrap; /* Preserves spaces and allows wrapping */
+  word-wrap: break-word;
+  white-space: pre-wrap;
   overflow: hidden;
-  max-width: 100%; /* Ensures it doesn't overflow parent container */
+  max-width: 100%;
 }
